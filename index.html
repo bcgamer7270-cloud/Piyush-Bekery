@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Piyush Bekery – Menu aur Rate</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF3E2; --card:#FFFFFF; --ink:#3A1F2B; --muted:#7A6670; --line:#D9E1C6;
+  --accent:#C8416B; --accent-ink:#FFFFFF; --saffron:#F2A33A; --wa:#1FA855;
+  --hero:#3A1F2B; --hero-ink:#FFF3E6;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1E1519; --card:#2B1E24; --ink:#FBEFE6; --muted:#BFA9B2; --line:#44323A;
+    --accent:#E86A92; --accent-ink:#2B1019; --hero:#120C0F; --hero-ink:#FFF3E6;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1E1519; --card:#2B1E24; --ink:#FBEFE6; --muted:#BFA9B2; --line:#44323A;
+  --accent:#E86A92; --accent-ink:#2B1019; --hero:#120C0F; --hero-ink:#FFF3E6;
+  color-scheme: dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Nunito",system-ui,sans-serif;line-height:1.5;padding-bottom:110px}
+h1,h2,h3{font-family:"Baloo 2","Nunito",sans-serif;margin:0;line-height:1.15}
+.hero{background:var(--hero);color:var(--hero-ink);padding:40px 20px 32px}
+.wrap{max-width:760px;margin:0 auto}
+.hero h1{font-size:clamp(2.2rem,8vw,3.6rem);font-weight:800}
+.hero p{margin:10px 0 20px;max-width:46ch;opacity:.9}
+.btn{display:inline-block;border:0;border-radius:999px;padding:12px 22px;font:700 1rem "Nunito",sans-serif;cursor:pointer;text-decoration:none}
+.btn-wa{background:var(--wa);color:#fff}
+.btn:focus-visible,.tab:focus-visible,.qty button:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}
+.info{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:18px;font-size:.92rem;opacity:.85}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.tabs .wrap{display:flex;gap:8px;overflow-x:auto;padding:12px 16px}
+.tab{flex:none;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 16px;font:700 .95rem "Nunito",sans-serif;cursor:pointer}
+.tab[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+main{padding:20px 16px}
+.sec{margin-bottom:28px}
+.sec h2{font-size:1.5rem;margin-bottom:10px}
+.item{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.emoji{font-size:2rem;width:44px;text-align:center;flex:none}
+.meta{flex:1;min-width:0}
+.meta b{display:block;font-weight:700}
+.meta small{color:var(--muted)}
+.price{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.15rem;white-space:nowrap}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--accent);background:transparent;color:var(--accent);font:700 1.2rem/1 "Nunito",sans-serif;cursor:pointer}
+.qty span{min-width:18px;text-align:center;font-weight:700}
+.add{border:1.5px solid var(--accent);background:transparent;color:var(--accent);border-radius:999px;padding:7px 16px;font:700 .95rem "Nunito",sans-serif;cursor:pointer}
+.custom{background:var(--card);border:1.5px dashed var(--saffron);border-radius:14px;padding:16px;margin-top:8px}
+.custom p{margin:6px 0 12px;color:var(--muted)}
+footer{padding:8px 16px 24px;color:var(--muted);font-size:.9rem;text-align:center}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));z-index:10;display:none}
+.bar.show{display:block}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.bar .locrow{justify-content:flex-start;margin-bottom:8px}
+.loc{border:1.5px solid var(--wa);background:transparent;color:var(--wa);border-radius:999px;padding:7px 14px;font:700 .9rem "Nunito",sans-serif;cursor:pointer}
+.loc:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}
+.locrow small{color:var(--muted)}
+.bar .tot{font-weight:700}
+.bar .tot small{display:block;color:var(--muted);font-weight:400}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <h1 id="shopName">Piyush Bekery</h1>
+    <p>Taaza snacks aur bakery ka saamaan. Pasand karo, WhatsApp pe order bhejo.</p>
+    <a class="btn btn-wa" id="waTop" href="#" target="_blank" rel="noopener">WhatsApp pe order karein</a>
+    <div class="info"><span>Samay: subah 8 baje se raat 9 baje tak</span><span>Pata: Bhognipur, chauraha ke paas</span></div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Menu categories"><div class="wrap" id="tabs"></div></nav>
+
+<main><div class="wrap">
+  <div id="menu"></div>
+</div></main>
+<footer>Rate badal sakte hain. Order ki final confirmation WhatsApp pe milegi.</footer>
+
+<div class="bar" id="bar">
+  <div class="wrap">
+  <div class="tot"><span id="count"></span><small id="total"></small><small id="locSt"></small></div>
+  <button class="btn btn-wa" id="waOrder" type="button">WhatsApp pe bhejein</button>
+</div></div>
+
+<script>
+// ===== Yahan apni details badlein =====
+var SHOP = "Piyush Bekery";
+var PHONE = "919555424639"; // country code ke saath, bina + ya space ke
+var ITEMS = [
+  {c:"Menu", e:"🥨", n:"Kurkure", u:"1 piece", p:10},
+  {c:"Menu", e:"🍘", n:"Tedhe Medhe", u:"1 piece", p:5},
+  {c:"Menu", e:"🍪", n:"Bada Bheem", u:"1 piece", p:30},
+  {c:"Menu", e:"🍞", n:"Butter Slice", u:"1 piece", p:5}
+];
+// =======================================
+var cats = ["Sab"].concat(ITEMS.map(function(i){return i.c}).filter(function(v,i,a){return a.indexOf(v)===i}));
+var cur = "Sab", qty = {}, LOC = "", ORDER = "";
+var $ = function(id){return document.getElementById(id)};
+function wa(text){ return "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(text); }
+document.title = SHOP + " – Menu aur Rate";
+$("shopName").textContent = SHOP;
+$("waTop").href = wa("Namaste " + SHOP + ", mujhe order karna hai.");
+
+function renderTabs(){
+  $("tabs").innerHTML = "";
+  cats.forEach(function(c){
+    var b = document.createElement("button");
+    b.className = "tab"; b.textContent = c; b.setAttribute("aria-pressed", c===cur);
+    b.onclick = function(){ cur = c; renderTabs(); renderMenu(); };
+    $("tabs").appendChild(b);
+  });
+}
+function renderMenu(){
+  var m = $("menu"); m.innerHTML = "";
+  cats.slice(1).forEach(function(c){
+    if(cur!=="Sab" && cur!==c) return;
+    var s = document.createElement("section"); s.className = "sec";
+    s.innerHTML = "<h2>"+c+"</h2>";
+    ITEMS.forEach(function(it, idx){
+      if(it.c!==c) return;
+      var q = qty[idx]||0, d = document.createElement("div"); d.className = "item";
+      d.innerHTML = '<div class="emoji" aria-hidden="true">'+it.e+'</div>'+
+        '<div class="meta"><b>'+it.n+'</b><small>'+it.u+'</small></div>'+
+        '<div class="price">₹'+it.p+'</div>'+
+        (q ? '<div class="qty"><button aria-label="Kam karein">−</button><span>'+q+'</span><button aria-label="Badhayein">+</button></div>'
+           : '<button class="add">Add</button>');
+      var bs = d.querySelectorAll("button");
+      if(q){ bs[0].onclick = function(){ chg(idx,-1) }; bs[1].onclick = function(){ chg(idx,1) }; }
+      else { bs[0].onclick = function(){ chg(idx,1) }; }
+      s.appendChild(d);
+    });
+    m.appendChild(s);
+  });
+}
+function chg(i,d){ qty[i] = Math.max(0,(qty[i]||0)+d); renderMenu(); renderBar(); }
+function renderBar(){
+  var n = 0, t = 0, lines = [];
+  ITEMS.forEach(function(it,i){
+    var q = qty[i]||0; if(!q) return;
+    n += q; t += q*it.p;
+    lines.push("• "+it.n+" ("+it.u+") x "+q+" = ₹"+(q*it.p));
+  });
+  $("bar").classList.toggle("show", n>0);
+  $("count").textContent = n + (n===1 ? " item" : " items");
+  $("total").textContent = "Kul: ₹" + t;
+  ORDER = ("Namaste "+SHOP+", mujhe ye order karna hai:\n\n"+lines.join("\n")+"\n\nKul: ₹"+t+"{LOC}\n\nNaam:\nPata / Pickup:\nKab chahiye:");
+}
+$("waOrder").onclick = function(){
+  var st = $("locSt"), btn = $("waOrder"), done = false;
+  function send(loc){
+    if(done) return; done = true;
+    btn.disabled = false; st.textContent = "";
+    window.location.href = wa(ORDER.replace("{LOC}", loc ? "\n\nMeri location: " + loc : ""));
+  }
+  if(!navigator.geolocation){ send(""); return; }
+  btn.disabled = true;
+  st.textContent = "Location ki ijazat dein, taaki dukaan tak aapki location pahunch sake...";
+  navigator.geolocation.getCurrentPosition(function(p){
+    send("https://maps.google.com/?q=" + p.coords.latitude + "," + p.coords.longitude);
+  }, function(){
+    send("");
+  }, {enableHighAccuracy:true, timeout:15000, maximumAge:60000});
+  setTimeout(function(){ send(""); }, 25000);
+};
+if(cats.length<3) document.querySelector(".tabs").style.display="none";
+renderTabs(); renderMenu(); renderBar();
+</script>
+</body>
+</html>
